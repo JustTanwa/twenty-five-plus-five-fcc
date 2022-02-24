@@ -11,3 +11,23 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#root {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100vh;
+}
+header {
+  display: block;
+  text-align: center;
+  font-size: 2em;
+  font-weight: 600;
+  background-color: rgb(122, 247, 247);
+  padding: 0.5em;
+}
+
+main {
+  display: grid;
+  place-items: center;
+  background-color: rgba(0, 255, 76, 0.377);
+}
