@@ -1,25 +1,58 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import Control from './components/Control';
 
-function App() {
-  return (
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      break: 5,
+      session: 25,
+    }
+    this.changeLength = this.changeLength.bind(this);
+
+  }
+
+  changeLength(e) {
+    const btnClick = e.target.id;
+    switch(btnClick) {
+      case "break-increment":
+        this.setState({
+          break: this.state.break + 1,
+        });
+        break;
+      case "break-decrement":
+        this.setState({
+          break: this.state.break - 1,
+        });
+        break;
+      case "session-increment":
+        this.setState({
+          session: this.state.session + 1,
+        });
+        break;
+      case "session-decrement":
+        this.setState({
+          session: this.state.session - 1,
+        });
+        break;
+
+    }
+  }
+
+  render() {
+    return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+       25 + 5 Clock
       </header>
+      <Control 
+        break={this.state.break} 
+        session={this.state.session} 
+        onClick={this.changeLength}
+      />
     </div>
   );
+    }
 }
 
 export default App;
