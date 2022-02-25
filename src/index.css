@@ -1,3 +1,6 @@
+:root {
+  --lightBlue: rgb(122, 247, 247);
+}
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -22,12 +25,65 @@ header {
   text-align: center;
   font-size: 2em;
   font-weight: 600;
-  background-color: rgb(122, 247, 247);
+  background-color: var(--lightBlue);
   padding: 0.5em;
 }
 
 main {
   display: grid;
-  place-items: center;
+  grid-template-columns: 1fr 50% 1fr;
+  grid-template-rows: 1fr 20% 1fr;
   background-color: rgba(0, 255, 76, 0.377);
+  justify-items: center;
+  align-items: center;
+  font-family: 'Gideon Roman', cursive;
+  font-weight: 600;
+}
+
+.top-controls {
+  grid-column: 2;
+  width: 80%;
+  text-align: center;
+  align-self: flex-end;
+}
+
+.break-increment {
+  display: inline-block;
+}
+#break-length, #session-length {
+  display: inline-block;
+  width: 3em;
+}
+
+.display {
+  grid-area: 2 / 2;
+  border: 0.25em rgba(32, 209, 200, 0.76) solid;
+  background-color: var(--lightBlue);
+  border-radius: 20px;
+  width: 80%;
+  text-align: center;
+}
+
+.bottom-controls {
+  grid-area: 3 / 2;
+  align-self: flex-start;
+}
+
+button {
+  background-color: var(--lightBlue);
+  border: 0.25em rgba(32, 209, 200, 0.76) solid;
+  border-radius: 5px;
+  padding: 0 1em;
+  cursor: pointer;
+}
+
+button > i {
+  pointer-events: none;
+}
+
+.bottom-controls > button {
+  margin: 0 1em;
+}
+
+.control-btn {
 }
