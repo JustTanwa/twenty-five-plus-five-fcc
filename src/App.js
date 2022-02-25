@@ -8,9 +8,11 @@ class App extends React.Component {
     this.state = {
       break: 5,
       session: 25,
+      timer: 1500,
       curTimer: "Session",
       timeLeft: "25:00",
       start: true,
+      intervalId: undefined,
     }
     this.changeLength = this.changeLength.bind(this);
     this.start = this.start.bind(this);
@@ -38,6 +40,7 @@ class App extends React.Component {
         const incNum = this.state.session + 1;
         this.setState({
           session: incNum,
+          timer: this.state.timer + 60,
           timeLeft: incNum < 10 ? "0" + incNum + ":00" : incNum + ":00"
         });
         break;
@@ -46,6 +49,7 @@ class App extends React.Component {
         const decNum = this.state.session - 1;
         this.setState({
           session: decNum,
+          timer: this.state.timer - 60,
           timeLeft: decNum < 10 ? "0" + decNum + ":00" : decNum + ":00"
         });
         break;
@@ -59,37 +63,63 @@ class App extends React.Component {
       start: !this.state.start,
     })
     console.log(this.state.start);
-    if (this.state.start) this.ticking();
+    const controlBtns = document.getElementsByClassName('control-btn');
     if (this.state.start) {
-      const controlBtns = document.getElementsByClassName('control-btn');
-      console.log(controlBtns);
+      controlBtns.forEach(btn => btn.disabled = true);
+    } else {
+      controlBtns.forEach(btn => btn.disabled = false);
+    }
+    if (this.state.start) {
+      console.log("start");
+      this.ticking();
+      this.intervalId = setInterval(this.ticking, 1000);
+    } else {
+      console.log("pause")
+      clearInterval(this.intervalId);
     }
   }
 
   ticking() {
-    const time = this.state.timeLeft.split(":");
-    let minutes = parseInt(time[0]);
-    let second = parseInt(time[1]);
-    if (second == 0) {
-      second = 59;
-    } else {
-      second -= 1;
+    let timer;
+    if (this.state.curTimer === "Session" && this.state.timer < 0) {
+      this.setState({
+        timer: this.state.break * 60,
+        curTimer: "Break",
+      });
     }
-    console.log(minutes, second)
-    const newTime = `${minutes}:${second}`
+    if (this.state.curTimer === "Break" && this.state.timer < 0) {
+      this.setState({
+        timer: this.state.session * 60,
+        curTimer: "Session",
+      });
+    }
+
+    let seconds = this.state.timer % 60;
+    let minutes = Math.floor(this.state.timer / 60) % 60;
+    // formatting the numbers for leading zero
+    if (seconds === 0 || seconds < 10) {seconds = `0${seconds}`};
+    if (minutes < 10) {minutes = `0${minutes}`};
     this.setState({
-      timeLeft: newTime,
-    })
-    setTimeout(this.ticking, 1000);
+      timer: this.state.timer - 1,
+      timeLeft: `${minutes}:${seconds}`
+    });
   }
 
   reset() {
+    // if interval exists clear it
+    if (this.intervalId) clearInterval(this.intervalId);
+    // make all buttons works
+    const controlBtns = document.getElementsByClassName('control-btn');
+    controlBtns.forEach(btn => btn.disabled = false);
+    // reset all states
     this.setState({
       break: 5,
       session: 25,
+      timer: 1500,
       curTimer: "Session",
       timeLeft: "25:00",
-      playing: false,
+      start: true,
+      intervalId: undefined,
     })
   }
 
